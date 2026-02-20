@@ -23,7 +23,7 @@ body {
     background: linear-gradient(180deg, #fff8fb 0%, #ffffff 100%);
 }
 
-/* Hide Streamlit header/footer */
+/* Hide Streamlit default header/footer */
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
@@ -62,7 +62,7 @@ footer {visibility: hidden;}
     transform: translateY(-2px);
 }
 
-/* Remove focus & active effects */
+/* Remove focus & active glow */
 .stButton>button:focus,
 .stButton>button:active {
     outline: none !important;
@@ -79,7 +79,7 @@ footer {visibility: hidden;}
     font-weight: 500;
 }
 
-/* Final love text with heartbeat */
+/* Final love text */
 .final-text {
     font-size: clamp(50px, 10vw, 90px);
     text-align: center;
@@ -136,6 +136,9 @@ if not st.session_state.accepted:
 # ---------------- LOVE REVEAL ----------------
 else:
 
+    # Optional soft background music
+    if os.path.exists("romantic.mp3"):
+        st.audio("romantic.mp3", autoplay=True)
 
     st.markdown('<div class="message-text">You unlocked my heart 💘</div>', unsafe_allow_html=True)
 
