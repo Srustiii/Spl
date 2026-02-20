@@ -137,7 +137,7 @@ else:
     # Subtle floating heart
     rain(
         emoji="❤️",
-        font_size=14,
+        font_size=16,
         falling_speed=2.5,
         animation_length="infinite"
     )
