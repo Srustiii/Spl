@@ -2,7 +2,6 @@ import streamlit as st
 from PIL import Image
 import os
 import time
-from streamlit_extras.let_it_rain import rain
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -15,83 +14,92 @@ st.set_page_config(
 if "accepted" not in st.session_state:
     st.session_state.accepted = False
 
-# ---------------- LUXURY CSS ----------------
+# ---------------- CINEMATIC CSS ----------------
 st.markdown("""
 <style>
 
-/* Soft romantic background */
+/* Soft luxury background */
 body {
-    background: radial-gradient(circle at center, #fff5f8 0%, #ffffff 65%);
+    background: linear-gradient(180deg, #fff8fb 0%, #ffffff 100%);
 }
 
-/* Hide Streamlit footer */
-footer {visibility: hidden;}
+/* Hide Streamlit default header/footer */
 header {visibility: hidden;}
+footer {visibility: hidden;}
 
-/* Main Title */
+/* Title */
 .main-title {
-    font-size: clamp(36px, 7vw, 54px);
+    font-size: clamp(40px, 8vw, 64px);
     text-align: center;
     font-weight: 700;
-    color: #ff3d7f;
-    text-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
-    margin-top: 40px;
+    color: #ff2e79;
+    letter-spacing: 1px;
+    margin-top: 60px;
 }
 
 /* Subtitle */
 .subtitle {
     font-size: clamp(20px, 5vw, 28px);
     text-align: center;
-    color: #ff5c99;
-    margin-top: 15px;
+    color: #ff6fa5;
+    margin-top: 20px;
 }
 
 /* Buttons */
 .stButton>button {
-    background: linear-gradient(135deg, #ff6fa5, #ff2e79);
+    background: linear-gradient(135deg, #ff7eb3, #ff2e79);
     color: white;
-    font-size: 20px;
-    border-radius: 40px;
-    padding: 14px 40px;
+    font-size: 22px;
+    border-radius: 50px;
+    padding: 16px 40px;
     border: none;
-    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.25);
+    box-shadow: 0 15px 40px rgba(255, 105, 180, 0.25);
     transition: all 0.3s ease;
 }
 
 .stButton>button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(255, 105, 180, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(255, 105, 180, 0.4);
 }
 
 /* Message text */
 .message-text {
-    font-size: clamp(24px, 6vw, 34px);
+    font-size: clamp(26px, 6vw, 38px);
     text-align: center;
-    color: #ff4d88;
-    margin-top: 25px;
-    min-height: 90px;
+    color: #ff3d7f;
+    margin-top: 40px;
+    min-height: 110px;
     font-weight: 500;
 }
 
-/* Final text */
+/* Final love text with heartbeat pulse */
 .final-text {
-    font-size: clamp(42px, 9vw, 70px);
+    font-size: clamp(50px, 10vw, 90px);
     text-align: center;
-    color: #ff2e79;
+    color: #ff1a66;
     font-weight: 700;
-    margin-top: 50px;
-    letter-spacing: 1px;
+    margin-top: 100px;
+    animation: heartbeat 1.6s infinite;
 }
 
-/* Smooth fade for images */
+/* Heartbeat animation */
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.05); }
+    40% { transform: scale(1); }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* Smooth fade image */
 img {
-    border-radius: 25px;
-    animation: fadeInImage 1.2s ease-in-out;
-    box-shadow: 0 20px 40px rgba(255, 105, 180, 0.2);
+    border-radius: 30px;
+    animation: fadeInImage 1.5s ease-in-out;
+    box-shadow: 0 25px 60px rgba(255, 105, 180, 0.2);
 }
 
 @keyframes fadeInImage {
-    from { opacity: 0; transform: scale(0.98); }
+    from { opacity: 0; transform: scale(0.97); }
     to { opacity: 1; transform: scale(1); }
 }
 
@@ -102,11 +110,10 @@ img {
 if not st.session_state.accepted:
 
     st.markdown('<div class="main-title">Do you Love Me? 💖</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle">Say yes na 🥺</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">This time… say it softly.</div>', unsafe_allow_html=True)
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
 
-    # Centered layout
     col_left, col_center, col_right = st.columns([1, 2, 1])
 
     with col_center:
@@ -116,18 +123,14 @@ if not st.session_state.accepted:
         st.markdown("<br>", unsafe_allow_html=True)
 
         if st.button("No 😌", use_container_width=True):
-            st.warning("Take your time… but I’ll still wait ❤️")
+            st.warning("Take your time… I’m not going anywhere.")
 
 # ---------------- LOVE REVEAL ----------------
 else:
 
-    # Very soft subtle floating heart (luxury style)
-    rain(
-        emoji="❤️",
-        font_size=16,
-        falling_speed=2,
-        animation_length="infinite"
-    )
+    # Optional soft background music
+    if os.path.exists("romantic.mp3"):
+        st.audio("romantic.mp3", autoplay=True)
 
     st.markdown('<div class="message-text">You unlocked my heart 💘</div>', unsafe_allow_html=True)
 
@@ -138,34 +141,42 @@ else:
         images = sorted(os.listdir(image_folder))
 
         messages = [
-            "I wanna love you again… not from where we began, but from where we paused.",
-            "Not with fear… but with understanding.",
-            "Not with expectations… but with patience.",
-            "Between silence and memories… I still find you.",
-            "Even after everything… my heart never really left.",
-            "So here I am… choosing you again."
+            "I wanna love you again… not from where we began.",
+            "But from where we paused.",
+            "Not with fear…",
+            "But with understanding.",
+            "Not with expectations…",
+            "But with patience.",
+            "Between silence and memories…",
+            "I still find you.",
+            "And even after everything…",
+            "My heart never really left.",
+            "So here I am…",
+            "Choosing you again."
         ]
 
         img_placeholder = st.empty()
         text_placeholder = st.empty()
 
-        for img_file, message in zip(images, messages):
+        for i in range(len(images)):
 
-            img_path = os.path.join(image_folder, img_file)
+            img_path = os.path.join(image_folder, images[i])
             img = Image.open(img_path)
 
             img_placeholder.image(img, use_container_width=True)
 
-            displayed_text = ""
+            message = messages[i % len(messages)]
+
+            displayed = ""
             for char in message:
-                displayed_text += char
+                displayed += char
                 text_placeholder.markdown(
-                    f"<div class='message-text'>{displayed_text}</div>",
+                    f"<div class='message-text'>{displayed}</div>",
                     unsafe_allow_html=True
                 )
-                time.sleep(0.03)
+                time.sleep(0.035)
 
-            time.sleep(2)
+            time.sleep(2.2)
 
         st.markdown('<div class="final-text">I Love You ❤️</div>', unsafe_allow_html=True)
 
