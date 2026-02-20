@@ -34,7 +34,7 @@ header {visibility: hidden;}
     text-align: center;
     font-weight: 700;
     color: #ff3d7f;
-    text-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+    text-shadow: 0 0 25px rgba(255, 105, 180, 0.25);
     margin-top: 40px;
 }
 
@@ -54,13 +54,12 @@ header {visibility: hidden;}
     border-radius: 40px;
     padding: 14px 40px;
     border: none;
-    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.25);
-    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.18);
+    transition: transform 0.2s ease;
 }
 
 .stButton>button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(255, 105, 180, 0.4);
+    transform: translateY(-2px);
 }
 
 /* Message text */
@@ -71,6 +70,7 @@ header {visibility: hidden;}
     margin-top: 25px;
     min-height: 90px;
     font-weight: 500;
+    animation: fadeText 1.5s ease-in-out;
 }
 
 /* Final text */
@@ -79,20 +79,34 @@ header {visibility: hidden;}
     text-align: center;
     color: #ff2e79;
     font-weight: 700;
-    margin-top: 50px;
+    margin-top: 60px;
     letter-spacing: 1px;
+    animation: heartbeat 1.8s infinite;
 }
 
-/* Smooth fade for images */
+/* Image cinematic zoom */
 img {
     border-radius: 25px;
-    animation: fadeInImage 1.2s ease-in-out;
-    box-shadow: 0 20px 40px rgba(255, 105, 180, 0.2);
+    animation: cinematicZoom 6s ease-in-out forwards;
+    box-shadow: 0 20px 50px rgba(255, 105, 180, 0.18);
 }
 
-@keyframes fadeInImage {
-    from { opacity: 0; transform: scale(0.98); }
-    to { opacity: 1; transform: scale(1); }
+/* Animations */
+@keyframes fadeText {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+
+@keyframes cinematicZoom {
+    0% { transform: scale(1); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: scale(1.05); }
 }
 
 </style>
@@ -106,7 +120,6 @@ if not st.session_state.accepted:
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 
-    # Centered layout
     col_left, col_center, col_right = st.columns([1, 2, 1])
 
     with col_center:
@@ -121,11 +134,11 @@ if not st.session_state.accepted:
 # ---------------- LOVE REVEAL ----------------
 else:
 
-    # Very soft subtle floating heart (luxury style)
+    # Subtle floating heart
     rain(
         emoji="❤️",
-        font_size=16,
-        falling_speed=2,
+        font_size=14,
+        falling_speed=1.5,
         animation_length="infinite"
     )
 
@@ -163,9 +176,9 @@ else:
                     f"<div class='message-text'>{displayed_text}</div>",
                     unsafe_allow_html=True
                 )
-                time.sleep(0.03)
+                time.sleep(0.035)
 
-            time.sleep(2)
+            time.sleep(2.5)
 
         st.markdown('<div class="final-text">I Love You ❤️</div>', unsafe_allow_html=True)
 
