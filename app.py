@@ -99,9 +99,9 @@ else:
 
     # Soft floating emoji (single layer)
     rain(
-        emoji=random.choice(["❤️", "💋", "🤗"]),
-        font_size=18,
-        falling_speed=2,
+        emoji=random.choice(["❤️", "💋"]),
+        font_size=14,
+        falling_speed=1,
         animation_length="infinite"
     )
 
