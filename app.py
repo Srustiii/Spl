@@ -138,7 +138,7 @@ else:
     rain(
         emoji="❤️",
         font_size=14,
-        falling_speed=1.5,
+        falling_speed=2.5,
         animation_length="infinite"
     )
 
