@@ -21,9 +21,29 @@ st.markdown("""
 /* Soft luxury background */
 body {
     background: linear-gradient(180deg, #fff8fb 0%, #ffffff 100%);
+    overflow-x: hidden;
 }
 
-/* Hide Streamlit default header/footer */
+/* Floating subtle emojis */
+.floating-hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.08;
+    font-size: 40px;
+    animation: floatUp 25s linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-120vh); }
+}
+
+/* Hide Streamlit header/footer */
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
@@ -35,6 +55,8 @@ footer {visibility: hidden;}
     color: #ff2e79;
     letter-spacing: 1px;
     margin-top: 60px;
+    position: relative;
+    z-index: 1;
 }
 
 /* Subtitle */
@@ -43,9 +65,11 @@ footer {visibility: hidden;}
     text-align: center;
     color: #ff6fa5;
     margin-top: 20px;
+    position: relative;
+    z-index: 1;
 }
 
-/* Buttons (NO SHADOW, NO GLOW) */
+/* Buttons (NO SHADOW) */
 .stButton>button {
     background: linear-gradient(135deg, #ff7eb3, #ff2e79);
     color: white;
@@ -62,7 +86,6 @@ footer {visibility: hidden;}
     transform: translateY(-2px);
 }
 
-/* Remove focus & active glow */
 .stButton>button:focus,
 .stButton>button:active {
     outline: none !important;
@@ -77,6 +100,8 @@ footer {visibility: hidden;}
     margin-top: 40px;
     min-height: 110px;
     font-weight: 500;
+    position: relative;
+    z-index: 1;
 }
 
 /* Final love text */
@@ -87,6 +112,8 @@ footer {visibility: hidden;}
     font-weight: 700;
     margin-top: 100px;
     animation: heartbeat 1.6s infinite;
+    position: relative;
+    z-index: 1;
 }
 
 /* Heartbeat animation */
@@ -103,6 +130,8 @@ img {
     border-radius: 30px;
     animation: fadeInImage 1.5s ease-in-out;
     box-shadow: 0 25px 60px rgba(255, 105, 180, 0.15);
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes fadeInImage {
@@ -112,6 +141,12 @@ img {
 
 </style>
 """, unsafe_allow_html=True)
+
+# Subtle floating background hearts + kisses
+st.markdown(
+    '<div class="floating-hearts">❤️ 💋 🤍 ❤️ 💕 💋 🤍 ❤️ 💕 💋 🤍</div>',
+    unsafe_allow_html=True
+)
 
 # ---------------- LANDING PAGE ----------------
 if not st.session_state.accepted:
@@ -126,6 +161,7 @@ if not st.session_state.accepted:
     with col_center:
         if st.button("Yes ❤️", use_container_width=True):
             st.session_state.accepted = True
+            time.sleep(0.2)
             st.rerun()
 
         st.markdown("<br>", unsafe_allow_html=True)
@@ -136,7 +172,6 @@ if not st.session_state.accepted:
 # ---------------- LOVE REVEAL ----------------
 else:
 
-    # Optional soft background music
     if os.path.exists("romantic.mp3"):
         st.audio("romantic.mp3", autoplay=True)
 
