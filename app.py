@@ -76,7 +76,7 @@ img {
 # ---------------- LANDING PAGE ----------------
 if not st.session_state.accepted:
 
-    st.markdown('<div class="main-title">💖 Do you Love Me? 💖</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title"> Do you Love Me? 💖</div>', unsafe_allow_html=True)
     st.markdown('<div class="responsive-text">Say yes na 🥺</div>', unsafe_allow_html=True)
 
     # 5 columns so Yes stays centered
@@ -100,8 +100,8 @@ else:
     # Soft floating emoji (single layer)
     rain(
         emoji=random.choice(["❤️", "💋"]),
-        font_size=14,
-        falling_speed=1,
+        font_size=16,
+        falling_speed=3,
         animation_length="infinite"
     )
 
