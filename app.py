@@ -2,7 +2,6 @@ import streamlit as st
 from PIL import Image
 import os
 import time
-import random
 from streamlit_extras.let_it_rain import rain
 
 # ---------------- PAGE CONFIG ----------------
@@ -16,98 +15,123 @@ st.set_page_config(
 if "accepted" not in st.session_state:
     st.session_state.accepted = False
 
-if "no_clicks" not in st.session_state:
-    st.session_state.no_clicks = 0
-
-# ---------------- CLEAN CSS ----------------
+# ---------------- LUXURY CSS ----------------
 st.markdown("""
 <style>
+
+/* Soft romantic background */
 body {
-    background-color: white;
+    background: radial-gradient(circle at center, #fff5f8 0%, #ffffff 65%);
 }
 
+/* Hide Streamlit footer */
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Main Title */
 .main-title {
-    font-size: clamp(32px, 6vw, 50px);
+    font-size: clamp(36px, 7vw, 54px);
     text-align: center;
-    font-weight: bold;
-    color: #ff4d88;
-    text-shadow: 0 0 12px #ff99cc;
+    font-weight: 700;
+    color: #ff3d7f;
+    text-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+    margin-top: 40px;
 }
 
-.responsive-text {
-    font-size: clamp(24px, 6vw, 34px);
+/* Subtitle */
+.subtitle {
+    font-size: clamp(20px, 5vw, 28px);
     text-align: center;
-    color: #ff4d88;
-    margin-top: 20px;
-    min-height: 80px;
-    font-weight: 500;
+    color: #ff5c99;
+    margin-top: 15px;
 }
 
-.final-text {
-    font-size: clamp(36px, 8vw, 60px);
-    text-align: center;
-    color: #ff1a75;
-    font-weight: bold;
-    margin-top: 35px;
-}
-
+/* Buttons */
 .stButton>button {
-    background: linear-gradient(45deg, #ff66a3, #ff1a75);
+    background: linear-gradient(135deg, #ff6fa5, #ff2e79);
     color: white;
     font-size: 20px;
-    border-radius: 30px;
-    padding: 12px 30px;
+    border-radius: 40px;
+    padding: 14px 40px;
     border: none;
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.25);
     transition: all 0.3s ease;
 }
 
 .stButton>button:hover {
-    transform: scale(1.1);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(255, 105, 180, 0.4);
 }
 
-img {
-    border-radius: 20px;
-    max-width: 100%;
-    height: auto;
+/* Message text */
+.message-text {
+    font-size: clamp(24px, 6vw, 34px);
+    text-align: center;
+    color: #ff4d88;
+    margin-top: 25px;
+    min-height: 90px;
+    font-weight: 500;
 }
+
+/* Final text */
+.final-text {
+    font-size: clamp(42px, 9vw, 70px);
+    text-align: center;
+    color: #ff2e79;
+    font-weight: 700;
+    margin-top: 50px;
+    letter-spacing: 1px;
+}
+
+/* Smooth fade for images */
+img {
+    border-radius: 25px;
+    animation: fadeInImage 1.2s ease-in-out;
+    box-shadow: 0 20px 40px rgba(255, 105, 180, 0.2);
+}
+
+@keyframes fadeInImage {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
 # ---------------- LANDING PAGE ----------------
 if not st.session_state.accepted:
 
-    st.markdown('<div class="main-title"> Do you Love Me? 💖</div>', unsafe_allow_html=True)
-    st.markdown('<div class="responsive-text">Say yes na 🥺</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title">Do you Love Me? 💖</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Say yes na 🥺</div>', unsafe_allow_html=True)
 
-    # 5 columns so Yes stays centered
-    cols = st.columns(5)
+    st.markdown("<br><br>", unsafe_allow_html=True)
 
-    yes_position = 2
-    no_position = random.randint(0, 4) if st.session_state.no_clicks > 0 else 3
+    # Centered layout
+    col_left, col_center, col_right = st.columns([1, 2, 1])
 
-    with cols[yes_position]:
-        if st.button("Yes ❤️"):
+    with col_center:
+        if st.button("Yes ❤️", use_container_width=True):
             st.session_state.accepted = True
 
-    with cols[no_position]:
-        if st.button("No 😏"):
-            st.session_state.no_clicks += 1
-            st.rerun()
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        if st.button("No 😌", use_container_width=True):
+            st.warning("Take your time… but I’ll still wait ❤️")
 
 # ---------------- LOVE REVEAL ----------------
 else:
 
-    # Soft floating emoji (single layer)
+    # Very soft subtle floating heart (luxury style)
     rain(
-        emoji=random.choice(["❤️", "💋"]),
+        emoji="❤️",
         font_size=16,
-        falling_speed=3,
+        falling_speed=2,
         animation_length="infinite"
     )
 
-    st.markdown('<div class="responsive-text">You unlocked my heart 💘</div>', unsafe_allow_html=True)
+    st.markdown('<div class="message-text">You unlocked my heart 💘</div>', unsafe_allow_html=True)
 
-    image_folder = "pictures"   # Make sure this folder exists
+    image_folder = "pictures"
 
     if os.path.exists(image_folder):
 
@@ -130,15 +154,13 @@ else:
             img_path = os.path.join(image_folder, img_file)
             img = Image.open(img_path)
 
-            # SIMPLE image display (no HTML wrapper)
             img_placeholder.image(img, use_container_width=True)
 
-            # Typewriter text
             displayed_text = ""
             for char in message:
                 displayed_text += char
                 text_placeholder.markdown(
-                    f"<div class='responsive-text'>{displayed_text}</div>",
+                    f"<div class='message-text'>{displayed_text}</div>",
                     unsafe_allow_html=True
                 )
                 time.sleep(0.03)
@@ -146,7 +168,6 @@ else:
             time.sleep(2)
 
         st.markdown('<div class="final-text">I Love You ❤️</div>', unsafe_allow_html=True)
-        st.markdown('<div class="responsive-text">This time… let’s not lose us.</div>', unsafe_allow_html=True)
 
     else:
         st.error("Pictures folder not found.")
