@@ -18,34 +18,33 @@ if "accepted" not in st.session_state:
 st.markdown("""
 <style>
 
-/* Soft luxury background */
 body {
     background: linear-gradient(180deg, #fff8fb 0%, #ffffff 100%);
     overflow-x: hidden;
 }
 
-/* Floating subtle emojis */
-.floating-hearts {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.08;
-    font-size: 40px;
-    animation: floatUp 25s linear infinite;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(100vh); }
-    100% { transform: translateY(-120vh); }
-}
-
-/* Hide Streamlit header/footer */
 header {visibility: hidden;}
 footer {visibility: hidden;}
+
+/* Remove ALL button effects completely */
+.stButton>button {
+    background: linear-gradient(135deg, #ff7eb3, #ff2e79);
+    color: white;
+    font-size: 22px;
+    border-radius: 50px;
+    padding: 16px 40px;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.stButton>button:hover,
+.stButton>button:focus,
+.stButton>button:active {
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+}
 
 /* Title */
 .main-title {
@@ -53,10 +52,7 @@ footer {visibility: hidden;}
     text-align: center;
     font-weight: 700;
     color: #ff2e79;
-    letter-spacing: 1px;
     margin-top: 60px;
-    position: relative;
-    z-index: 1;
 }
 
 /* Subtitle */
@@ -65,163 +61,119 @@ footer {visibility: hidden;}
     text-align: center;
     color: #ff6fa5;
     margin-top: 20px;
-    position: relative;
-    z-index: 1;
 }
 
-/* Buttons (NO SHADOW) */
-.stButton>button {
-    background: linear-gradient(135deg, #ff7eb3, #ff2e79);
-    color: white;
-    font-size: 22px;
-    border-radius: 50px;
-    padding: 16px 40px;
-    border: none;
-    box-shadow: none;
-    outline: none;
-    transition: transform 0.2s ease;
-}
-
-.stButton>button:hover {
-    transform: translateY(-2px);
-}
-
-.stButton>button:focus,
-.stButton>button:active {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-/* Message text */
+/* Message */
 .message-text {
     font-size: clamp(26px, 6vw, 38px);
     text-align: center;
     color: #ff3d7f;
     margin-top: 40px;
     min-height: 110px;
-    font-weight: 500;
-    position: relative;
-    z-index: 1;
 }
 
-/* Final love text */
+/* Final text */
 .final-text {
     font-size: clamp(50px, 10vw, 90px);
     text-align: center;
     color: #ff1a66;
-    font-weight: 700;
     margin-top: 100px;
     animation: heartbeat 1.6s infinite;
-    position: relative;
-    z-index: 1;
 }
 
-/* Heartbeat animation */
 @keyframes heartbeat {
     0% { transform: scale(1); }
-    25% { transform: scale(1.05); }
-    40% { transform: scale(1); }
-    60% { transform: scale(1.08); }
+    50% { transform: scale(1.07); }
     100% { transform: scale(1); }
 }
 
-/* Smooth fade image */
 img {
     border-radius: 30px;
-    animation: fadeInImage 1.5s ease-in-out;
+    animation: fadeInImage 1.2s ease-in-out;
     box-shadow: 0 25px 60px rgba(255, 105, 180, 0.15);
-    position: relative;
-    z-index: 1;
 }
 
 @keyframes fadeInImage {
-    from { opacity: 0; transform: scale(0.97); }
-    to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# Subtle floating background hearts + kisses
-st.markdown(
-    '<div class="floating-hearts">❤️ 💋 🤍 ❤️ 💕 💋 🤍 ❤️ 💕 💋 🤍</div>',
-    unsafe_allow_html=True
-)
+# ---------------- MAIN CONTAINER ----------------
+main = st.container()
 
 # ---------------- LANDING PAGE ----------------
 if not st.session_state.accepted:
+    with main:
+        st.markdown('<div class="main-title">Do you Love Me? 💖</div>', unsafe_allow_html=True)
+        st.markdown('<div class="subtitle">This time… say it softly.</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="main-title">Do you Love Me? 💖</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle">This time… say it softly.</div>', unsafe_allow_html=True)
+        st.markdown("<br><br>", unsafe_allow_html=True)
 
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 2, 1])
 
-    col_left, col_center, col_right = st.columns([1, 2, 1])
+        with col2:
+            if st.button("Yes ❤️", use_container_width=True):
+                st.session_state.accepted = True
+                main.empty()   # CLEAR ENTIRE LANDING
+                st.experimental_rerun()
 
-    with col_center:
-        if st.button("Yes ❤️", use_container_width=True):
-            st.session_state.accepted = True
-            time.sleep(0.2)
-            st.rerun()
+            st.markdown("<br>", unsafe_allow_html=True)
 
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        if st.button("No 😌", use_container_width=True):
-            st.warning("Take your time… I’m not going anywhere.")
+            if st.button("No 😌", use_container_width=True):
+                st.warning("Take your time… I’m not going anywhere.")
 
 # ---------------- LOVE REVEAL ----------------
 else:
+    with main:
+        st.markdown('<div class="message-text">You unlocked my heart 💘</div>', unsafe_allow_html=True)
 
-    if os.path.exists("romantic.mp3"):
-        st.audio("romantic.mp3", autoplay=True)
+        image_folder = "pictures"
 
-    st.markdown('<div class="message-text">You unlocked my heart 💘</div>', unsafe_allow_html=True)
+        if os.path.exists(image_folder):
 
-    image_folder = "pictures"
+            images = sorted(os.listdir(image_folder))
 
-    if os.path.exists(image_folder):
+            messages = [
+                "I wanna love you again… not from where we began.",
+                "But from where we paused.",
+                "Not with fear…",
+                "But with understanding.",
+                "Not with expectations…",
+                "But with patience.",
+                "Between silence and memories…",
+                "I still find you.",
+                "And even after everything…",
+                "My heart never really left.",
+                "So here I am…",
+                "Choosing you again."
+            ]
 
-        images = sorted(os.listdir(image_folder))
+            img_placeholder = st.empty()
+            text_placeholder = st.empty()
 
-        messages = [
-            "I wanna love you again… not from where we began.",
-            "But from where we paused.",
-            "Not with fear…",
-            "But with understanding.",
-            "Not with expectations…",
-            "But with patience.",
-            "Between silence and memories…",
-            "I still find you.",
-            "And even after everything…",
-            "My heart never really left.",
-            "So here I am…",
-            "Choosing you again."
-        ]
+            for i in range(len(images)):
+                img_path = os.path.join(image_folder, images[i])
+                img = Image.open(img_path)
 
-        img_placeholder = st.empty()
-        text_placeholder = st.empty()
+                img_placeholder.image(img, use_container_width=True)
 
-        for i in range(len(images)):
+                message = messages[i % len(messages)]
 
-            img_path = os.path.join(image_folder, images[i])
-            img = Image.open(img_path)
+                displayed = ""
+                for char in message:
+                    displayed += char
+                    text_placeholder.markdown(
+                        f"<div class='message-text'>{displayed}</div>",
+                        unsafe_allow_html=True
+                    )
+                    time.sleep(0.035)
 
-            img_placeholder.image(img, use_container_width=True)
+                time.sleep(2.2)
 
-            message = messages[i % len(messages)]
+            st.markdown('<div class="final-text">I Love You ❤️</div>', unsafe_allow_html=True)
 
-            displayed = ""
-            for char in message:
-                displayed += char
-                text_placeholder.markdown(
-                    f"<div class='message-text'>{displayed}</div>",
-                    unsafe_allow_html=True
-                )
-                time.sleep(0.035)
-
-            time.sleep(2.2)
-
-        st.markdown('<div class="final-text">I Love You ❤️</div>', unsafe_allow_html=True)
-
-    else:
-        st.error("Pictures folder not found.")
+        else:
+            st.error("Pictures folder not found.")
